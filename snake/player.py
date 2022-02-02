@@ -12,7 +12,7 @@ class Player:
     body_asset = image.load(Path(__file__).parent / "assets/snake_body.png")
     x = []          # Body x locations
     y = []          # Body y locations
-    speed = 100     # Speed in pixels
+    block_size = 10 # Grid size in pixels
     length = 0      # Body length
     
     def __init__(self, length) -> None:
@@ -34,13 +34,13 @@ class Player:
             self.y[i] = self.y[i-1]
 
         if dir is Direction.UP:
-            self.y[0] -= self.speed
+            self.y[0] -= self.block_size
         elif dir is Direction.DOWN:
-            self.y[0] += self.speed
+            self.y[0] += self.block_size
         elif dir is Direction.LEFT:
-            self.x[0] -= self.speed
+            self.x[0] -= self.block_size
         elif dir is Direction.RIGHT:
-            self.x[0] += self.speed
+            self.x[0] += self.block_size
 
     def draw(self, screen) -> None:
         """
