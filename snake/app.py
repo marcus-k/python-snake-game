@@ -16,18 +16,22 @@ class App:
         self.player = Player(4)
     
     def render(self) -> None:
-        self._screen.fill(Color("black"))
-        self.player.draw(self._screen)
+        self._screen.fill(Color("black"))   # Background color
+        self.player.draw(self._screen)      # Draw snake
 
         pygame.display.update()
 
     def run(self) -> None:
-        """Main event loop."""
+        """
+        Main event loop.
+        """
         while self._running:
+            # Check for the window closing
             for event in pygame.event.get():
                 if event.type == QUIT:
                     self._running = False
 
+            # Check which direction is pressed
             keys = pygame.key.get_pressed()
             if keys[K_d]:
                 self.player.move(Direction.RIGHT)

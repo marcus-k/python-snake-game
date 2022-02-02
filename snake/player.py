@@ -9,13 +9,16 @@ class Direction(Enum):
     RIGHT = 4
 
 class Player:
-    x = []
-    y = []
-    speed = 100
-    length = 0
     body_asset = image.load(Path(__file__).parent / "assets/snake_body.png")
+    x = []          # Body x locations
+    y = []          # Body y locations
+    speed = 100     # Speed in pixels
+    length = 0      # Body length
     
     def __init__(self, length) -> None:
+        """
+        Initialize the snake body.
+        """
         self.body_asset = self.body_asset.convert()
         self.length = length
         for i in range(length):
@@ -23,6 +26,9 @@ class Player:
             self.y.append(0)
 
     def move(self, dir: Direction) -> None:
+        """
+        Move the snake body accordingly with specified direction.
+        """
         for i in range(self.length-1, 0, -1):
             self.x[i] = self.x[i-1]
             self.y[i] = self.y[i-1]
@@ -37,5 +43,8 @@ class Player:
             self.x[0] += self.speed
 
     def draw(self, screen) -> None:
+        """
+        Draw the snake body on the screen.
+        """
         for i in range(self.length):
             screen.blit(self.body_asset, (self.x[i], self.y[i]))
