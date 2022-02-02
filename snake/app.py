@@ -1,23 +1,30 @@
 import pygame
 from pygame.locals import *
+from pathlib import Path
 import time
 
 from .player import Player, Direction
+from .apple import Apple
 
 class App:
-    window_size = (500, 500)
+    window_size = (800, 800)
 
     def __init__(self) -> None:
         pygame.init()
         self._screen = pygame.display.set_mode(self.window_size)
+        pygame.display.set_icon(
+            pygame.image.load(Path(__file__).parent / "assets/apple.png")
+        )
         pygame.display.set_caption("Snake Game")
         self._running = True
 
-        self.player = Player(4)
+        self.player = Player(15)
+        self.apple = Apple(10, 10)
     
     def render(self) -> None:
         self._screen.fill(Color("black"))   # Background color
         self.player.draw(self._screen)      # Draw snake
+        self.apple.draw(self._screen)       # Draw apple
 
         pygame.display.update()
 
