@@ -8,6 +8,7 @@ from .apple import Apple
 
 class App:
     window_size = (800, 800)
+    block_size = 10
 
     def __init__(self) -> None:
         pygame.init()
@@ -18,8 +19,8 @@ class App:
         pygame.display.set_caption("Snake Game")
         self._running = True
 
-        self.player = Player(15)
-        self.apple = Apple(10, 10)
+        self.player = Player(15, self.block_size)
+        self.apple = Apple(10, 10, self.block_size)
     
     def render(self) -> None:
         self._screen.fill(Color("black"))   # Background color
@@ -50,6 +51,12 @@ class App:
                 self.player.move(Direction.UP)
 
             self.render()
-            time.sleep(100 / 1000)
+            time.sleep(200 / 1000)
 
         pygame.quit()
+
+    def collision(self, x1, y1, x2, y2):
+        """
+        Check for collision between two cells.
+        """
+        pass

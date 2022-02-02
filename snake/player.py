@@ -12,15 +12,15 @@ class Player:
     body_asset = image.load(Path(__file__).parent / "assets/snake_body.png")
     x = []          # Body x locations
     y = []          # Body y locations
-    block_size = 10 # Grid size in pixels
-    length = 0      # Body length
     
-    def __init__(self, length) -> None:
+    def __init__(self, length, block_size) -> None:
         """
         Initialize the snake body.
         """
         self.body_asset = self.body_asset.convert()
-        self.length = length
+
+        self.length = length            # Snake length
+        self.block_size = block_size    # Grid block size
         for i in range(length):
             self.x.append(0)
             self.y.append(0)

@@ -5,12 +5,14 @@ class Apple:
     body_asset = image.load(Path(__file__).parent / "assets/apple.png")
     x = 0
     y = 0
-    block_size = 10
 
-    def __init__(self, x, y) -> None:
+    def __init__(self, x, y, block_size) -> None:
+        self.body_asset = self.body_asset.convert()
+        
+        self.block_size = block_size
         self.x = x * self.block_size
         self.y = y * self.block_size
-        self.body_asset = self.body_asset.convert()
+        
 
     def draw(self, screen) -> None:
         """
