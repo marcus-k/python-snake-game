@@ -1,10 +1,11 @@
 import pygame
 from pygame.locals import *
+import time
 
 from .player import Player, Direction
 
 class App:
-    window_size = (800, 600)
+    window_size = (500, 500)
 
     def __init__(self) -> None:
         pygame.init()
@@ -12,11 +13,11 @@ class App:
         pygame.display.set_caption("Snake Game")
         self._running = True
 
-        self.player = Player()
+        self.player = Player(4)
     
-    def render(self):
+    def render(self) -> None:
         self._screen.fill(Color("black"))
-        self._screen.blit(self.player.body_asset, (self.player.x, self.player.y))
+        self.player.draw(self._screen)
 
         pygame.display.update()
 
@@ -38,5 +39,6 @@ class App:
                 self.player.move(Direction.UP)
 
             self.render()
+            time.sleep(100 / 1000)
 
         pygame.quit()
