@@ -6,7 +6,7 @@ import time
 from .player import Player, Direction
 from .apple import Apple
 
-class App:
+class Game:
     window_size = (800, 800)
     block_size = 10
 
@@ -19,7 +19,7 @@ class App:
         pygame.display.set_caption("Snake Game")
         self._running = True
 
-        self.player = Player(15, self.block_size)
+        self.player = Player(4, self.block_size)
         self.apple = Apple(10, 10, self.block_size)
     
     def render(self) -> None:
@@ -50,13 +50,19 @@ class App:
             if keys[K_w]:
                 self.player.move(Direction.UP)
 
+            # Check for if apple is eaten (move inside player.move(dir, self))
+            if self.collision(self.player.x[0], self.player.y[0], self.apple.x, self.apple.y):
+                self.player.eat()
+                self.apple.respawn(self.window_size)
+
+
             self.render()
             time.sleep(200 / 1000)
 
         pygame.quit()
 
-    def collision(self, x1, y1, x2, y2):
+    def collision(self, x1, y1, x2, y2) -> bool:
         """
         Check for collision between two cells.
         """
-        pass
+        return x1 == x2 and y1 == y2
