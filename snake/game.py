@@ -115,9 +115,11 @@ class Game:
             self.game_over = True
         
         # Eaten itself
-        elif self.player.x[0] in self.player.x[1:]:
-            if self.player.y[0] in self.player.y[1:]:
-                self.game_over = True
+        else:
+            for i in range(1, self.player.length):
+                if self.player.x[0] == self.player.x[i]:
+                    if self.player.y[0] == self.player.y[i]:
+                        self.game_over = True
 
     def restart_loop(self) -> None:
         """
