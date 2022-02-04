@@ -13,6 +13,7 @@ class Game:
     def __init__(self, verbose=False) -> None:
         self.verbose = verbose
 
+        # Initialize PyGame settings and display
         pygame.init()
         self._screen = pygame.display.set_mode(self.window_size)
         pygame.display.set_icon(
@@ -21,6 +22,7 @@ class Game:
         pygame.display.set_caption("Snake Game")
         self._running = True
 
+        # Add objects to the game
         self.player = Player(4, self.block_size)
         self.apple = Apple(10, 10, self.block_size)
     
@@ -29,7 +31,7 @@ class Game:
         self.player.draw(self._screen)      # Draw snake
         self.apple.draw(self._screen)       # Draw apple
 
-        pygame.display.update()
+        pygame.display.update()             # Update current display
 
     def run(self) -> None:
         """
@@ -59,7 +61,7 @@ class Game:
                 self.player.eat()
                 self.apple.respawn(self.window_size)
 
-
+            # Render new positions
             self.render()
             time.sleep(200 / 1000)
 

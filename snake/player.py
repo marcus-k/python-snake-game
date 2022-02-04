@@ -54,6 +54,9 @@ class Player:
         self.tail_y = self.y.pop()
 
     def eat(self) -> None:
+        """
+        Add length to snake, restore tail position.
+        """
         self.length += 1
         self.x.append(self.tail_x)
         self.y.append(self.tail_y)
