@@ -6,6 +6,7 @@ from random import randint
 
 from .player import Player, Direction
 from .apple import Apple
+from .button import RestartButton
 
 class Game:
     window_size = (400, 400)
@@ -22,7 +23,12 @@ class Game:
             pygame.image.load(Path(__file__).parent / "assets/apple.png")
         )
         pygame.display.set_caption("Snake Game")
+
+        self.setup()
         self._running = True
+
+    def setup(self) -> None:
+        self.game_over = False
 
         # Add snake to the game
         self.player = Player(4, self.block_size)
@@ -32,7 +38,7 @@ class Game:
         while x == self.player.x and y == self.player.y:
             x = randint(0, self.window_size[0] / self.block_size - 1)
             y = randint(0, self.window_size[1] / self.block_size - 1)
-            if verbose:
+            if self.verbose:
                 print(f"apple: {x * self.block_size}, {y * self.block_size}")
 
         self.apple = Apple(x, y, self.block_size)
@@ -45,16 +51,27 @@ class Game:
         pygame.display.update()             # Update current display
 
     def run(self) -> None:
-        """
-        Main event loop.
-        """
         while self._running:
+            # Start main game loop
+            self.game_loop()
+
+            # If snake dies, run restart loop
+            if self.game_over:
+                self.restart_loop()
+            
+        pygame.quit()
+
+    def game_loop(self) -> None:
+        """
+        Main game loop.
+        """
+        while not self.game_over and self._running:
             # Check for the window closing
             for event in pygame.event.get():
                 if event.type == QUIT:
                     self._running = False
 
-            # Check which direction is pressed
+            # Change snake direction
             keys = pygame.key.get_pressed()
             if keys[K_d]:
                 self.player.dir = Direction.RIGHT
@@ -64,23 +81,19 @@ class Game:
                 self.player.dir = Direction.DOWN
             if keys[K_w]:
                 self.player.dir = Direction.UP
-
+        
+            # Increment player forwards
             self.player.move()
-    
             if self.verbose and any(keys):
                 print(f"Player: ({self.player.x}, {self.player.y})")
-
+    
+            # Check game events
             self.check_apple()
             self.check_snake()
-
-            if self.game_over:
-                break
 
             # Render new positions
             self.render()
             time.sleep(200 / 1000)
-
-        pygame.quit()
 
     def check_apple(self) -> None:
         """
@@ -105,4 +118,20 @@ class Game:
         elif self.player.x[0] in self.player.x[1:]:
             if self.player.y[0] in self.player.y[1:]:
                 self.game_over = True
-        
+
+    def restart_loop(self) -> None:
+        """
+        Restart loop for when the game ends.
+        """
+        # Draw restart button onto the screen
+        button = RestartButton(17.5, 312.5).draw(self._screen)
+        pygame.display.update()
+
+        while self.game_over and self._running:
+            for event in pygame.event.get():
+                if event.type == QUIT:
+                    self._running = False
+                if event.type == MOUSEBUTTONUP:
+                    if button.collidepoint(pygame.mouse.get_pos()):
+                        self.setup()
+    

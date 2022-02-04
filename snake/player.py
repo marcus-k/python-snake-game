@@ -9,9 +9,7 @@ class Direction(Enum):
     RIGHT = 4
 
 class Player:
-    body_asset = image.load(Path(__file__).parent / "assets/snake_body.png")
-    x = []          # Body x locations
-    y = []          # Body y locations
+    body_asset = image.load(Path(__file__).parent / "assets/snake_body.png")        
     tail_x = 0              # Previous tail x location
     tail_y = 0              # Previous tail y location
     dir = Direction.DOWN    # Current facing direction
@@ -24,6 +22,8 @@ class Player:
 
         self.length = length            # Snake length
         self.block_size = block_size    # Grid block size
+        self.x = []                     # Body x locations
+        self.y = []                     # Body y locations
         for i in range(length):
             self.x.append(5 * block_size)
             self.y.append(5 * block_size)
