@@ -9,6 +9,7 @@ from .apple import Apple
 class Game:
     window_size = (800, 800)
     block_size = 10
+    game_over = False
 
     def __init__(self, verbose=False) -> None:
         self.verbose = verbose
@@ -56,16 +57,35 @@ class Game:
             if self.verbose and any(keys):
                 print(f"Player: ({self.player.x}, {self.player.y})")
 
-            # Check for if apple is eaten (move inside player.move(dir, self))
-            if self.collision(self.player.x[0], self.player.y[0], self.apple.x, self.apple.y):
-                self.player.eat()
-                self.apple.respawn(self.window_size)
+            self.check_apple()
+            self.check_snake()
+
+            if self.game_over:
+                break
 
             # Render new positions
             self.render()
             time.sleep(200 / 1000)
 
         pygame.quit()
+
+    def check_apple(self) -> None:
+        """
+        Check if the apple has been eaten by the snake.
+        """
+        if self.player.x[0] == self.apple.x:
+            if self.player.y[0] == self.apple.y:
+                self.player.eat()
+                self.apple.respawn(self.window_size)
+
+    def check_snake(self) -> None:
+        """
+        Check if the snake has gone out of bounds
+        """
+        if not 0 <= self.player.x[0] <= self.window_size[0]:
+            self.game_over = True
+        elif not 0 <= self.player.y[0] <= self.window_size[1]:
+            self.game_over = True
 
     def collision(self, x1, y1, x2, y2) -> bool:
         """
