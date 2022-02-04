@@ -47,13 +47,16 @@ class Game:
             # Check which direction is pressed
             keys = pygame.key.get_pressed()
             if keys[K_d]:
-                self.player.move(Direction.RIGHT)
+                self.player.dir = Direction.RIGHT
             if keys[K_a]:
-                self.player.move(Direction.LEFT)
+                self.player.dir = Direction.LEFT
             if keys[K_s]:
-                self.player.move(Direction.DOWN)
+                self.player.dir = Direction.DOWN
             if keys[K_w]:
-                self.player.move(Direction.UP)
+                self.player.dir = Direction.UP
+
+            self.player.move()
+    
             if self.verbose and any(keys):
                 print(f"Player: ({self.player.x}, {self.player.y})")
 
@@ -86,9 +89,3 @@ class Game:
             self.game_over = True
         elif not 0 <= self.player.y[0] <= self.window_size[1]:
             self.game_over = True
-
-    def collision(self, x1, y1, x2, y2) -> bool:
-        """
-        Check for collision between two cells.
-        """
-        return x1 == x2 and y1 == y2

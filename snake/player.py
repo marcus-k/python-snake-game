@@ -12,10 +12,11 @@ class Player:
     body_asset = image.load(Path(__file__).parent / "assets/snake_body.png")
     x = []          # Body x locations
     y = []          # Body y locations
-    tail_x = 0      # Previous tail location
-    tail_y = 0      # Previous tail location
+    tail_x = 0              # Previous tail x location
+    tail_y = 0              # Previous tail y location
+    dir = Direction.DOWN    # Current facing direction
     
-    def __init__(self, length, block_size) -> None:
+    def __init__(self, length: int, block_size: int) -> None:
         """
         Initialize the snake body.
         """
@@ -27,10 +28,13 @@ class Player:
             self.x.append(0)
             self.y.append(0)
 
-    def move(self, dir: Direction) -> None:
+    def move(self, dir: Direction = None) -> None:
         """
         Move the snake body accordingly with specified direction.
         """
+        if dir is None:
+            dir = self.dir
+
         # Current snake head location
         current_x = self.x[0]
         current_y = self.y[0]
