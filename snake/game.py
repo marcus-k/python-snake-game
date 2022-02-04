@@ -10,7 +10,9 @@ class Game:
     window_size = (800, 800)
     block_size = 10
 
-    def __init__(self) -> None:
+    def __init__(self, verbose=False) -> None:
+        self.verbose = verbose
+
         pygame.init()
         self._screen = pygame.display.set_mode(self.window_size)
         pygame.display.set_icon(
@@ -49,6 +51,8 @@ class Game:
                 self.player.move(Direction.DOWN)
             if keys[K_w]:
                 self.player.move(Direction.UP)
+            if self.verbose and any(keys):
+                print(f"Player: ({self.player.x}, {self.player.y})")
 
             # Check for if apple is eaten (move inside player.move(dir, self))
             if self.collision(self.player.x[0], self.player.y[0], self.apple.x, self.apple.y):
