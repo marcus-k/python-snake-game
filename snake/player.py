@@ -16,7 +16,13 @@ class Player:
     tail_y = 0              # Previous tail y location
     dir = Direction.DOWN    # Current facing direction
     
-    def __init__(self, length: int, block_size: int) -> None:
+    def __init__(
+        self, 
+        length: int, 
+        block_size: int, 
+        x: int = 0, 
+        y: int = 0
+    ) -> None:
         """
         Initialize the snake body.
         """
@@ -25,8 +31,8 @@ class Player:
         self.length = length            # Snake length
         self.block_size = block_size    # Grid block size
         for i in range(length):
-            self.x.append(0)
-            self.y.append(0)
+            self.x.append(5 * block_size)
+            self.y.append(5 * block_size)
 
     def move(self, dir: Direction = None) -> None:
         """

@@ -83,9 +83,16 @@ class Game:
 
     def check_snake(self) -> None:
         """
-        Check if the snake has gone out of bounds
+        Check if the snake has gone out of bounds or eaten itself
         """
+        # Out of bounds
         if not 0 <= self.player.x[0] <= self.window_size[0]:
             self.game_over = True
         elif not 0 <= self.player.y[0] <= self.window_size[1]:
             self.game_over = True
+        
+        # Eaten itself
+        elif self.player.x[0] in self.player.x[1:]:
+            if self.player.y[0] in self.player.y[1:]:
+                self.game_over = True
+        
