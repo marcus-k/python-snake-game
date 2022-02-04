@@ -12,6 +12,8 @@ class Player:
     body_asset = image.load(Path(__file__).parent / "assets/snake_body.png")
     x = []          # Body x locations
     y = []          # Body y locations
+    tail_x = 0      # Previous tail location
+    tail_y = 0      # Previous tail location
     
     def __init__(self, length, block_size) -> None:
         """
@@ -29,18 +31,32 @@ class Player:
         """
         Move the snake body accordingly with specified direction.
         """
-        for i in range(self.length-1, 0, -1):
-            self.x[i] = self.x[i-1]
-            self.y[i] = self.y[i-1]
+        # Current snake head location
+        current_x = self.x[0]
+        current_y = self.y[0]
 
+        # Move head forwards
         if dir is Direction.UP:
-            self.y[0] -= self.block_size
+            self.x.insert(0, current_x)
+            self.y.insert(0, current_y - self.block_size)
         elif dir is Direction.DOWN:
-            self.y[0] += self.block_size
+            self.x.insert(0, current_x)
+            self.y.insert(0, current_y + self.block_size)
         elif dir is Direction.LEFT:
-            self.x[0] -= self.block_size
+            self.x.insert(0, current_x - self.block_size)
+            self.y.insert(0, current_y)
         elif dir is Direction.RIGHT:
-            self.x[0] += self.block_size
+            self.x.insert(0, current_x + self.block_size)
+            self.y.insert(0, current_y)
+
+        # Store old tail position
+        self.tail_x = self.x.pop()
+        self.tail_y = self.y.pop()
+
+    def eat(self) -> None:
+        self.length += 1
+        self.x.append(self.tail_x)
+        self.y.append(self.tail_y)
 
     def draw(self, screen) -> None:
         """
