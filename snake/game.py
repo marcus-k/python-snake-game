@@ -2,12 +2,13 @@ import pygame
 from pygame.locals import *
 from pathlib import Path
 import time
+from random import randint
 
 from .player import Player, Direction
 from .apple import Apple
 
 class Game:
-    window_size = (800, 800)
+    window_size = (400, 400)
     block_size = 10
     game_over = False
 
@@ -23,9 +24,18 @@ class Game:
         pygame.display.set_caption("Snake Game")
         self._running = True
 
-        # Add objects to the game
+        # Add snake to the game
         self.player = Player(4, self.block_size)
-        self.apple = Apple(10, 10, self.block_size)
+
+        # Add apple to the game, not on top of the snake
+        x, y = self.player.x, self.player.y
+        while x == self.player.x and y == self.player.y:
+            x = randint(0, self.window_size[0] / self.block_size - 1)
+            y = randint(0, self.window_size[1] / self.block_size - 1)
+            if verbose:
+                print(f"apple: {x * self.block_size}, {y * self.block_size}")
+
+        self.apple = Apple(x, y, self.block_size)
     
     def render(self) -> None:
         self._screen.fill(Color("black"))   # Background color
@@ -86,9 +96,9 @@ class Game:
         Check if the snake has gone out of bounds or eaten itself
         """
         # Out of bounds
-        if not 0 <= self.player.x[0] <= self.window_size[0]:
+        if not 0 <= self.player.x[0] < self.window_size[0]:
             self.game_over = True
-        elif not 0 <= self.player.y[0] <= self.window_size[1]:
+        elif not 0 <= self.player.y[0] < self.window_size[1]:
             self.game_over = True
         
         # Eaten itself

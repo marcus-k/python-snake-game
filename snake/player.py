@@ -16,13 +16,7 @@ class Player:
     tail_y = 0              # Previous tail y location
     dir = Direction.DOWN    # Current facing direction
     
-    def __init__(
-        self, 
-        length: int, 
-        block_size: int, 
-        x: int = 0, 
-        y: int = 0
-    ) -> None:
+    def __init__(self, length: int, block_size: int) -> None:
         """
         Initialize the snake body.
         """
