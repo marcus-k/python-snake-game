@@ -129,11 +129,18 @@ class Game:
         button = RestartButton(17.5, 312.5).draw(self._screen)
         pygame.display.update()
 
+        # Restart loop
         while self.game_over and self._running:
             for event in pygame.event.get():
+                # Check for the window closing
                 if event.type == QUIT:
                     self._running = False
+                # Check if restart button is pressed
                 if event.type == MOUSEBUTTONUP:
                     if button.collidepoint(pygame.mouse.get_pos()):
+                        self.setup()
+                # Check if 'r' key is pressed
+                if event.type == KEYUP:
+                    if event.key == K_r:
                         self.setup()
     
