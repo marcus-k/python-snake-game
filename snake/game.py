@@ -3,18 +3,25 @@ from pygame.locals import *
 from pathlib import Path
 import time
 from random import randint
+from enum import Enum
 
 from .player import Player, Direction
 from .apple import Apple
 from .button import RestartButton
+
+class GameMode(Enum):
+    PLAYER = 1
+    AI = 2
 
 class Game:
     window_size = (400, 400)
     block_size = 10
     game_over = False
 
-    def __init__(self, verbose=False) -> None:
+    def __init__(self, game_speed=0.2, AI=False, verbose=False) -> None:
         self.verbose = verbose
+        self.game_speed = game_speed
+        self.game_mode = GameMode.AI if AI else GameMode.PLAYER
 
         # Initialize PyGame settings and display
         pygame.init()
@@ -66,6 +73,10 @@ class Game:
         Main game loop.
         """
         while not self.game_over and self._running:
+            # Render new positions
+            self.render()
+            time.sleep(self.game_speed)
+
             # Check for the window closing
             for event in pygame.event.get():
                 if event.type == QUIT:
@@ -90,10 +101,6 @@ class Game:
             # Check game events
             self.check_apple()
             self.check_snake()
-
-            # Render new positions
-            self.render()
-            time.sleep(200 / 1000)
 
     def check_apple(self) -> None:
         """
